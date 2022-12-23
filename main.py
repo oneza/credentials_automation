@@ -46,7 +46,7 @@ def create_json(path, log, passw):
         "SteamLogin": f"{log}",
         "SteamPassword": f"{passw}",
     }
-    with open(path_builder(path, log)+'_.json', "w+") as file:
+    with open(path_builder(path, log)+'.json', "w+") as file:
         json.dump(data_dict, file)
 
 
