@@ -14,6 +14,13 @@ delete_params = {
 }
 
 
+def path_builder(path, file_name):
+    if '\\' in path:
+        return f"{path}\{file_name}"
+    else:
+        return f"{path}/{file_name}"
+
+
 def not_empty_list(lst):
     return max([_ is not None for _ in lst])
 
@@ -33,13 +40,13 @@ def read_excel(file_name):
     return rows_list
 
 
-def create_json(log, passw):
+def create_json(path, log, passw):
     data_dict = {
         "Enabled": True,
         "SteamLogin": f"{log}",
         "SteamPassword": f"{passw}",
     }
-    with open (f'{log}_.json', "w+") as file:
+    with open(path_builder(path, log)+'.json', "w+") as file:
         json.dump(data_dict, file)
 
 
@@ -57,10 +64,13 @@ def delete_old_files():
 
 
 if __name__ == '__main__':
+    print(os.getcwd())
+    print('\\' in "c:\\")
+    print(1)
     directory = os.getcwd()
+    path = input('Enter path to xlsx file: ')
     file_name = input('Enter xlsx file name: ')
     delete_old = input('Delete old files? Enter y/n: ')
-    print(1)
     if delete_old in delete_params["Yes"]:
         delete_old_files()
     elif delete_old in delete_params["No"]:
@@ -68,9 +78,9 @@ if __name__ == '__main__':
     else:
         print("ты че делаешь дядя алло")
 
-    excel_data = read_excel(file_name=file_name)
+    excel_data = read_excel(path_builder(path, file_name))
     for row in excel_data:
-        create_json(row[2], row[3])
+        create_json(path, row[2], row[3])
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
