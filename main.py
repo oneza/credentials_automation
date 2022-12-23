@@ -58,8 +58,7 @@ def delete_old_files(path):
     for filename in files:
         if ".json" in filename:
             if (now - os.stat(filename).st_mtime) > 100:
-                command = "rm {0}".format(filename)
-                subprocess.call(command, shell=True)
+                os.remove(filename)
 
 
 if __name__ == '__main__':
