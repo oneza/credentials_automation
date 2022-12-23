@@ -51,11 +51,10 @@ def create_json(path, log, passw):
 
 
 # Press the green button in the gutter to run the script.
-def delete_old_files():
+def delete_old_files(path):
     now = time.time()
-    folder = os.getcwd()
 
-    files = [os.path.join(folder, filename) for filename in os.listdir(folder)]
+    files = [os.path.join(path, filename) for filename in os.listdir(path)]
     for filename in files:
         if ".json" in filename:
             if (now - os.stat(filename).st_mtime) > 100:
@@ -64,15 +63,12 @@ def delete_old_files():
 
 
 if __name__ == '__main__':
-    print(os.getcwd())
-    print('\\' in "c:\\")
-    print(1)
     directory = os.getcwd()
     path = input('Enter path to xlsx file: ')
     file_name = input('Enter xlsx file name: ')
     delete_old = input('Delete old files? Enter y/n: ')
     if delete_old in delete_params["Yes"]:
-        delete_old_files()
+        delete_old_files(path)
     elif delete_old in delete_params["No"]:
         print("ну и хуй с тобой")
     else:
