@@ -35,6 +35,8 @@ class Main(QMainWindow):
 
         folder_selection_text = QLabel(self)
         folder_selection_text.setText("Select folder for jsons: ")
+        # folder_selection_value_text = QLabel(self)
+        # folder_selection_value_text.setText(f'{self.folder_addr}')
         folder_selection = QPushButton(self)
         folder_selection.setText("...")
         folder_selection.clicked.connect(lambda: self.select_folder())
@@ -76,7 +78,7 @@ class Main(QMainWindow):
             "All Files (*);; Python Files (*.py);; PNG Files (*.png)",
         )
         cls.xlsx_addr = fname[0]
-        print(cls.xlsx_addr)
+        # print(cls.xlsx_addr)
 
     @classmethod
     def select_folder(cls):
@@ -84,8 +86,8 @@ class Main(QMainWindow):
             QWidget(),
             "Select folder"
         )
-        cls.xlsx_addr = dir_name
-        print(cls.xlsx_addr)
+        cls.folder_addr = dir_name
+        # print(cls.folder_addr)
 
     @classmethod
     def main_function(cls):
@@ -94,10 +96,11 @@ class Main(QMainWindow):
         else:
             cls.delete_old_files()
 
-        print(cls.xlsx_addr)
+        # print(cls.xlsx_addr)
         excel_data = cls.read_excel()
         for row in excel_data:
-            cls.create_json(cls.folder_addr, row[2], row[3])
+            if row[2] is not None:
+                cls.create_json(row[2], row[3])
 
     @classmethod
     def delete_old_files(cls):
@@ -113,6 +116,7 @@ class Main(QMainWindow):
     def create_json(cls, log, passw):
         data_dict = {
             "Enabled": True,
+            "Paused": True,
             "SteamLogin": f"{log}",
             "SteamPassword": f"{passw}",
         }
@@ -139,6 +143,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_gui = Main()
     main_gui.show()
-    print(Main.folder_addr)
-    print(Main.xlsx_addr)
+    # print(Main.folder_addr)
+    # print(Main.xlsx_addr)
     sys.exit(app.exec())
