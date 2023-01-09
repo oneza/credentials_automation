@@ -29,17 +29,21 @@ class Main(QMainWindow):
 
         file_selection_text = QLabel(self)
         file_selection_text.setText("Select xlsx file: ")
+        file_selection_value_text = QLabel(self)
+        file_selection_value_text.setText('')
         file_selection = QPushButton(self)
         file_selection.setText("...")
         file_selection.clicked.connect(lambda: self.open_dialog())
+        file_selection.clicked.connect(lambda: self.update_text(file_selection_value_text, f'{self.xlsx_addr}'))
 
         folder_selection_text = QLabel(self)
         folder_selection_text.setText("Select folder for jsons: ")
-        # folder_selection_value_text = QLabel(self)
-        # folder_selection_value_text.setText(f'{self.folder_addr}')
+        folder_selection_value_text = QLabel(self)
+        folder_selection_value_text.setText('')
         folder_selection = QPushButton(self)
         folder_selection.setText("...")
         folder_selection.clicked.connect(lambda: self.select_folder())
+        folder_selection.clicked.connect(lambda: self.update_text(folder_selection_value_text, f'{self.folder_addr}'))
 
         checkbox_text = QLabel(self)
         checkbox_text.setText("Check this field to delete older jsons")
@@ -50,13 +54,15 @@ class Main(QMainWindow):
         run_button = QPushButton(self)
         run_button.setText("Run")
         run_button.clicked.connect(lambda: self.main_function())
-        # run_button.clicked()
+        run_button.clicked.connect(lambda: self.run_button_dialog())
 
         layout = QGridLayout()
         layout.addWidget(file_selection_text, 0, 0)
-        layout.addWidget(file_selection, 0, 1)
+        layout.addWidget(file_selection_value_text, 0, 1)
+        layout.addWidget(file_selection, 0, 2)
         layout.addWidget(folder_selection_text, 1, 0)
-        layout.addWidget(folder_selection, 1, 1)
+        layout.addWidget(folder_selection_value_text, 1, 1)
+        layout.addWidget(folder_selection, 1, 2)
         layout.addWidget(checkbox_text, 2, 0)
         layout.addWidget(checkbox, 2, 1)
         layout.addWidget(run_button, 3, 0)
@@ -64,6 +70,18 @@ class Main(QMainWindow):
         widget = QWidget()
         widget.setLayout(layout)
         self.setCentralWidget(widget)
+
+    def run_button_dialog(self):
+        dlg = QMessageBox(self)
+        # dlg.setWindowTitle("I have a question!")
+        dlg.setText("All done!")
+        button = dlg.exec()
+
+        if button == QMessageBox.StandardButton.Ok:
+            self.close()
+
+    def update_text(self, attr, text_string):
+        attr.setText(text_string)
 
     @classmethod
     def show_state(cls, s):
